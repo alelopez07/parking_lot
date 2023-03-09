@@ -22,6 +22,8 @@ services:
     depends_on:
       - pl_api
       - pl_database
+    networks:
+      - pl_net
 
   pl_api:
     build:
@@ -30,8 +32,6 @@ services:
     container_name: pl_api
     volumes:
       - ./api:/var/www
-    ports:
-      - 9002:9002
     working_dir: /var/www
     networks:
       - pl_net
