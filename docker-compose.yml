@@ -8,8 +8,7 @@ services:
     tty: true
     # exposing its :80 port as :8080 on our local machine
     ports:
-      - 8080:80
-      - 443:443
+      - 80:80
     
     # - ./api folder is bound to the container’s /var/www path. anything we modify in /api 
     # will be available to the server under /var/www immediately.

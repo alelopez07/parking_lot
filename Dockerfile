@@ -1,7 +1,4 @@
-FROM php:8.0.0rc1-fpm
-
-# composer.lock and composer.json
-COPY ./api/composer.lock ./api/composer.json /var/www/
+FROM php:8.1.0-fpm
 
 # working directory
 WORKDIR /var/www
@@ -14,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
-# Clear cache
+# clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # extensions
@@ -27,16 +24,16 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy existing application directory contents
+# copy existing application directory contents
 COPY ./api /var/www
 
-# Copy existing permissions from folder to docker
+# copy existing permissions from folder to docker
 COPY --chown=www:www . /var/www
 RUN chown -R www-data:www-data /var/www
 
-# Change current user to www
+# change current user to www
 USER www
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9002
+# expose port 9000 and start php-fpm server
+EXPOSE 9000
 CMD ["php-fpm"]
