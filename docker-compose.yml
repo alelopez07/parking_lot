@@ -2,9 +2,10 @@ version: '3'
   
 services:
 
-  pl_server:
+  server:
     image: nginx:stable-alpine
-    container_name: pl_server
+    container_name: server
+    restart: unless-stopped
     tty: true
     # exposing its :80 port as :8080 on our local machine
     ports:
@@ -19,25 +20,25 @@ services:
       - ./api:/var/www
       - ./api/docker-files/server/app.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - pl_api
-      - pl_database
+      - app
+      - database
     networks:
-      - pl_net
+      - net
 
-  pl_api:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: pl_api
+    container_name: app
     volumes:
       - ./api:/var/www
     working_dir: /var/www
     networks:
-      - pl_net
+      - net
 
-  pl_database:
+  database:
     image: mariadb:10.5.6
-    container_name: pl_database
+    container_name: database
     restart: unless-stopped
     tty: true
     ports:
@@ -49,10 +50,10 @@ services:
       - storage:/var/lib/mysql
       - ./api/docker-files/database/my.cnf:/etc/mysql/my.cnf
     networks:
-      - pl_net
+      - net
 
 networks:
-  pl_net:
+  net:
     driver: bridge
 
 secrets:
