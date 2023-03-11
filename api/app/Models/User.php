@@ -2,9 +2,9 @@
 
 /**
  * User
- * 
- * responsible for creating entrances. 
-*/
+ *
+ * responsible for creating entrances.
+ */
 
 namespace App\Models;
 
@@ -51,10 +51,11 @@ class User extends Authenticatable
 
     /**
      * Get the entrances created.
-     * 
+     *
      * @return HasMany entrances
      */
-    public function entrances(): HasMany {
+    public function entrances(): HasMany
+    {
         return $this->hasMany(Entrance::class);
     }
 }

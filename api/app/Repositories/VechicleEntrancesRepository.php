@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-interface VehicleEntrancesRepository 
+interface VehicleEntrancesRepository
 {
-
 }

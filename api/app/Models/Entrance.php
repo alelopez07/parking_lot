@@ -2,7 +2,7 @@
 
 /**
  * Entrance
- * 
+ *
  * Entity to register an entrance to the parking lot.
  */
 
@@ -22,9 +22,9 @@ class Entrance extends Model
     use SoftDeletes;
     use HasUuids;
 
-    protected $table = "entrances";
+    protected $table = 'entrances';
 
-    protected $fillable = ['license_plate','started_at','finalized_at','state','vehicle_type_id','user_id'];
+    protected $fillable = ['license_plate', 'started_at', 'finalized_at', 'state', 'vehicle_type_id', 'user_id'];
 
     /**
      * Generate a new UUID for the model.
@@ -33,7 +33,7 @@ class Entrance extends Model
     {
         return (string) Uuid::uuid4();
     }
-    
+
     /**
      * Get the columns that should receive a unique identifier.
      *
@@ -46,29 +46,31 @@ class Entrance extends Model
 
     /**
      * Get the vehicle information
-     * 
+     *
      * @return BelongsTo vehicle entity
      */
-    public function vehicle(): BelongsTo {
+    public function vehicle(): BelongsTo
+    {
         return $this->belongsTo(Vehicle::class);
     }
 
     /**
      * Get the user information
-     * 
+     *
      * @return BelongsTo user entity
      */
-    public function user(): BelongsTo {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the payment details
-     * 
+     *
      * @return HasMany payment details
      */
-    public function paymentDetails(): HasMany {
+    public function paymentDetails(): HasMany
+    {
         return $this->hasMany(EntrancePaymentDetail::class);
     }
-
 }

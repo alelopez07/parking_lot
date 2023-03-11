@@ -2,8 +2,8 @@
 
 /**
  * VehicleType
- * 
- * The API clasify the vehicles by types. 
+ *
+ * The API clasify the vehicles by types.
  * ["residents", "officials", "externals", "another_useful_type_of"]
  */
 
@@ -22,9 +22,9 @@ class VehicleType extends Model
     use SoftDeletes;
     use HasUuids;
 
-    protected $table = "vehicle_types";
+    protected $table = 'vehicle_types';
 
-    protected $fillable = ['name','value'];
+    protected $fillable = ['name', 'value'];
 
     /**
      * Generate a new UUID for the model.
@@ -33,7 +33,7 @@ class VehicleType extends Model
     {
         return (string) Uuid::uuid4();
     }
-    
+
     /**
      * Get the columns that should receive a unique identifier.
      *
@@ -46,10 +46,11 @@ class VehicleType extends Model
 
     /**
      * Get the vehicles related to the type.
-     * 
+     *
      * @return HasMany vehicles
      */
-    public function vehicles() : HasMany {
+    public function vehicles(): HasMany
+    {
         return $this->hasMany(Vehicle::class);
     }
 }

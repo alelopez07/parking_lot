@@ -2,7 +2,7 @@
 
 /**
  * Vehicle
- * 
+ *
  * Main entity. Register vehicles.
  */
 
@@ -22,9 +22,9 @@ class Vehicle extends Model
     use SoftDeletes;
     use HasUuids;
 
-    protected $table = "vehicles";
+    protected $table = 'vehicles';
 
-    protected $fillable = ['license_plate','vehicle_type_id'];
+    protected $fillable = ['license_plate', 'vehicle_type_id'];
 
     /**
      * Generate a new UUID for the model.
@@ -33,7 +33,7 @@ class Vehicle extends Model
     {
         return (string) Uuid::uuid4();
     }
-    
+
     /**
      * Get the columns that should receive a unique identifier.
      *
@@ -46,19 +46,21 @@ class Vehicle extends Model
 
     /**
      * Get the vehicle type information.
-     * 
+     *
      * @return BelongsTo vehicle type
      */
-    public function vehicleType() : BelongsTo {
+    public function vehicleType(): BelongsTo
+    {
         return $this->belongsTo(VehicleType::class);
     }
-    
+
     /**
      * Get the entrances of parking lot.
-     * 
+     *
      * @return HasMany entrances
      */
-    public function entrances(): HasMany {
+    public function entrances(): HasMany
+    {
         return $this->hasMany(Entrance::class);
     }
 }

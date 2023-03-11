@@ -2,7 +2,7 @@
 
 /**
  * EntrancePaymentDetail
- * 
+ *
  * Parking payment detail for using the parking lot.
  */
 
@@ -21,9 +21,9 @@ class EntrancePaymentDetail extends Model
     use SoftDeletes;
     use HasUuids;
 
-    protected $table = "entrance_payment_details";
+    protected $table = 'entrance_payment_details';
 
-    protected $fillable = ['payment_type','minutes','total','entrance_id'];
+    protected $fillable = ['payment_type', 'minutes', 'total', 'entrance_id'];
 
     /**
      * Generate a new UUID for the model.
@@ -32,7 +32,7 @@ class EntrancePaymentDetail extends Model
     {
         return (string) Uuid::uuid4();
     }
-    
+
     /**
      * Get the columns that should receive a unique identifier.
      *
@@ -45,10 +45,11 @@ class EntrancePaymentDetail extends Model
 
     /**
      * Get the entrance information.
-     * 
+     *
      * @return BelongsTo entrance entity
      */
-    public function entrance(): BelongsTo {
+    public function entrance(): BelongsTo
+    {
         return $this->belongsTo(Entrance::class);
     }
 }
