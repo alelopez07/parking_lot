@@ -42,12 +42,12 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       MYSQL_DATABASE: pldb
-      MYSQL_ROOT_PASSWORD: ./dbpwd.txt
+      MYSQL_ROOT_PASSWORD: secret_password
     volumes:
-      - storage:/var/lib/mysql
+      - dbdata:/var/lib/mysql
       - ./api/docker-files/database/my.cnf:/etc/mysql/my.cnf
     networks:
       - net
@@ -55,11 +55,7 @@ services:
 networks:
   net:
     driver: bridge
-
-secrets:
-  dbpwd:
-    file: ./dbpwd.txt
   
 volumes:
-  storage:
+  dbdata:
     driver: local

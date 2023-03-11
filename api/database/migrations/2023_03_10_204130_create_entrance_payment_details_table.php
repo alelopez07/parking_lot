@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('entrance_payment_details', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('payment_type');
+            $table->string('minutes');
+            $table->double('total', 4, 2);
+            $table->foreignUuid('entrance_id')
+                ->references('id')
+                ->on('entrances')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
