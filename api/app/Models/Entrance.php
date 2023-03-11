@@ -3,7 +3,7 @@
 /**
  * Entrance
  * 
- * Entity to register an entry to the parking lot.
+ * Entity to register an entrance to the parking lot.
  */
 
 namespace App\Models;
@@ -11,6 +11,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -41,4 +43,32 @@ class Entrance extends Model
     {
         return ['id'];
     }
+
+    /**
+     * Get the vehicle information
+     * 
+     * @return BelongsTo vehicle entity
+     */
+    public function vehicle(): BelongsTo {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    /**
+     * Get the user information
+     * 
+     * @return BelongsTo user entity
+     */
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the payment details
+     * 
+     * @return HasMany payment details
+     */
+    public function paymentDetails(): HasMany {
+        return $this->hasMany(EntrancePaymentDetail::class);
+    }
+
 }

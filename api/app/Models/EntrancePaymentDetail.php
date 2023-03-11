@@ -11,6 +11,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -40,5 +41,14 @@ class EntrancePaymentDetail extends Model
     public function uniqueIds(): array
     {
         return ['id'];
+    }
+
+    /**
+     * Get the entrance information.
+     * 
+     * @return BelongsTo entrance entity
+     */
+    public function entrance(): BelongsTo {
+        return $this->belongsTo(Entrance::class);
     }
 }

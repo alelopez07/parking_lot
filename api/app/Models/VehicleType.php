@@ -12,6 +12,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ramsey\Uuid\Uuid;
 
@@ -41,5 +42,14 @@ class VehicleType extends Model
     public function uniqueIds(): array
     {
         return ['id'];
+    }
+
+    /**
+     * Get the vehicles related to the type.
+     * 
+     * @return HasMany vehicles
+     */
+    public function vehicles() : HasMany {
+        return $this->hasMany(Vehicle::class);
     }
 }
