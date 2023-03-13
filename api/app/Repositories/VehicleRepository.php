@@ -13,6 +13,16 @@ use Carbon\Carbon;
 
 class VehicleRepository implements VehicleInterface
 {
+    private $residentId;
+    private $noResidentId;
+    private $officialId;
+
+    public function __construct() {
+        $this->residentId = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first()->id;
+        $this->noResidentId = VehicleType::where('name',VehicleType::CONST_NO_RESIDENT_KEY)->first()->id;
+        $this->officialId = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first()->id;
+    }
+
     public function newEntrance($userId, array $data): BaseResponse {
         $result = new EntranceResponse();
         try {
@@ -65,10 +75,10 @@ class VehicleRepository implements VehicleInterface
     public function newResident($licensePlate, $diff) { }
 
     public function completeEntrance($id): BaseResponse {
+        dd($this->residentId);
         $response = new EntranceResponse();
         $entrance = Entrance::find($id);
         if ($entrance != null) {
-            $response->setResponse(true);
             $response->setEntranceId($entrance->id);
             if ($entrance->state == "COMPLETED") {
                 $response->setMessage("the entrance was completed on: " . $entrance->finalized_at);
@@ -77,39 +87,52 @@ class VehicleRepository implements VehicleInterface
                 $finalizedAt = Carbon::now();
                 $entrance->update(['finalized_at' => $finalizedAt, 'state' => "COMPLETED"]);
                 $response->setMessage("the entrance was completed successfuly.");
-                $response->setComments("this session token was completed and closed at: " . $finalizedAt);
+                $comments = "- this session token was completed and closed at: " . $finalizedAt ."\n";
+
                 $diff = $this->getEntranceDiffTime($entrance->started_at, $finalizedAt);
-                $resident = $this->handleResidents($entrance->license_plate, $diff);
+                $vehicleType = $entrance->vehicleType->id;
+
+                if ($vehicleType == $this->residentId) {
+                    $resident = $this->handleResidents($entrance->license_plate, $diff);
+                    if ($resident == ResponseActionCode::CREATED) {
+                        $comments += "- this vehicle was registered as resident on vehicles. \n";
+                    } else if ($resident == ResponseActionCode::UPDATED) {
+                        $comments += "- this vehicle was updated with new time: " . $diff . "\n";
+                    }
+                } else if ($vehicleType == $this->noResidentId) {
+                    $amount = $entrance->vehicleType->amount;
+                    $total = floatval($amount * (strtotime($diff)/60));
+                    $comments += "- the total amount for [".$diff."] -> $".$total;
+
+                } else if ($vehicleType == $this->officialId) {
+                    $comments += "- the total time for official license plate [".$entrance->license_plate."] is [".$diff."] \n";
+                    $comments += "- from: [".$entrance->started_at."] - to: [".$finalizedAt."] \n";
+                }
+
+                $response->setComments($comments);
             }
         } else {
             $response->setResponse(false);
             $response->setMessage("an error has ocurred");
         }
         
-
         return $response;
     }
 
     private function handleResidents($licensePlate, $diff): ResponseActionCode {
-        $residentId = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first()->id;
         $vehicleExist = Vehicle::where('license_plate',$licensePlate)->first();
-
         if ($vehicleExist == null) {
             $vehicle = new Vehicle();
             $vehicle->license_plate = $licensePlate;
-            $vehicle->vehicle_type_id = $residentId;
+            $vehicle->vehicle_type_id = $this->residentId;
             $vehicle->time = $diff;
             $vehicle->save();
             return ResponseActionCode::CREATED;
         } else {
-            $currentTime = new \DateTime::createFromFormat('H:i:s', $vehicleExist->time);
-            $newDiff = new \DateTime::createFromFormat('H:i:s', $diff);
-            $newTime = $currentTime->add($newDiff);
-
-            
-            dd($newTime->format('H:i:s'));
-            // $vehicleExist->time = $newTime->format('H:i:s');
-            
+            $currentTime = \DateTime::createFromFormat('H:i:s', $vehicleExist->time);
+            $newDiff = \DateTime::createFromFormat('H:i:s', $diff);
+            $newTime = $currentTime->add($newDiff->diff(new \DateTime('00:00:00')));
+            $vehicleExist->update(['time' => $newTime->format('H:i:s')]); 
             return ResponseActionCode::UPDATED;
         }
     }
