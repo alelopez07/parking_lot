@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\v1\AuthController;
+use App\Http\Controllers\v1\UserController;
+use App\Http\Controllers\v1\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function() {
 
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::post('/login', [AuthController::class, 'authentication']);
+    Route::post('/register', [UserController::class, 'createUser']);
 
+    Route::group(['middleware' => ["auth:sanctum"]], function() {
+        Route::post('/vehicle_type/create', [VehicleController::class, 'createVehicleType']);
+        Route::get('/logout', [AuthController::class, 'logout']);
+    });
 });

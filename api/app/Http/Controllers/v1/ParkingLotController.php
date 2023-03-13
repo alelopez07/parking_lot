@@ -4,13 +4,13 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Requests\StoreEntranceRequest;
 use App\Interfaces\VehicleInterface;
-use App\Traits\ApiResponses;
+use App\Traits\ApiResponse;
 use Illuminate\Routing\Controller as ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ParkingLotController extends ApiController {
 
-    use ApiResponses;
+    use ApiResponse;
     protected $repository;
 
     /**
