@@ -45,13 +45,13 @@ class Entrance extends Model
     }
 
     /**
-     * Get the vehicle information
+     * Get the vehicle type information
      *
-     * @return BelongsTo vehicle entity
+     * @return BelongsTo vehicle type entity
      */
-    public function vehicle(): BelongsTo
+    public function vehicleType(): BelongsTo
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(VehicleType::class);
     }
 
     /**

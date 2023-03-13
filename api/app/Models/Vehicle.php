@@ -53,14 +53,4 @@ class Vehicle extends Model
     {
         return $this->belongsTo(VehicleType::class);
     }
-
-    /**
-     * Get the entrances of parking lot.
-     *
-     * @return HasMany entrances
-     */
-    public function entrances(): HasMany
-    {
-        return $this->hasMany(Entrance::class);
-    }
 }

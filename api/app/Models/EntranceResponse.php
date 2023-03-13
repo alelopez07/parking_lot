@@ -2,9 +2,19 @@
 
 namespace App\Models;
 
-class EntranceResponse extends BaseResponse {
+class EntranceResponse {
     public $entranceId;
-    public string $comments;
+    public array $comments;
+    public bool $response;
+    public string $message;
+
+    function setMessage($value) {
+        $this->message = $value;
+    }
+
+    function setResponse($value) {
+        $this->response = $value;
+    }
 
     public function setEntranceId($id) {
         $this->entranceId = $id;

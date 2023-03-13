@@ -57,4 +57,14 @@ class VehicleType extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
+
+    /**
+     * Get the entrances related to the type.
+     *
+     * @return HasMany entrances
+     */
+    public function entrances(): HasMany
+    {
+        return $this->hasMany(Entrance::class);
+    }
 }

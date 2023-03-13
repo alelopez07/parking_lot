@@ -23,7 +23,7 @@ class VehicleRepository implements VehicleInterface
         $this->officialId = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first()->id;
     }
 
-    public function newEntrance($userId, array $data): BaseResponse {
+    public function newEntrance($userId, array $data): EntranceResponse {
         $result = new EntranceResponse();
         try {
             $exist = Entrance::where('license_plate',$data["license_plate"])->where('state',"ACTIVE")->first();
@@ -74,48 +74,54 @@ class VehicleRepository implements VehicleInterface
 
     public function newResident($licensePlate, $diff) { }
 
-    public function completeEntrance($id): BaseResponse {
-        dd($this->residentId);
+    public function completeEntrance($id): EntranceResponse {
         $response = new EntranceResponse();
-        $entrance = Entrance::find($id);
-        if ($entrance != null) {
-            $response->setEntranceId($entrance->id);
-            if ($entrance->state == "COMPLETED") {
-                $response->setMessage("the entrance was completed on: " . $entrance->finalized_at);
-                $response->setComments("this session token has already been closed");
-            } else {
-                $finalizedAt = Carbon::now();
-                $entrance->update(['finalized_at' => $finalizedAt, 'state' => "COMPLETED"]);
-                $response->setMessage("the entrance was completed successfuly.");
-                $comments = "- this session token was completed and closed at: " . $finalizedAt ."\n";
-
-                $diff = $this->getEntranceDiffTime($entrance->started_at, $finalizedAt);
-                $vehicleType = $entrance->vehicleType->id;
-
-                if ($vehicleType == $this->residentId) {
-                    $resident = $this->handleResidents($entrance->license_plate, $diff);
-                    if ($resident == ResponseActionCode::CREATED) {
-                        $comments += "- this vehicle was registered as resident on vehicles. \n";
-                    } else if ($resident == ResponseActionCode::UPDATED) {
-                        $comments += "- this vehicle was updated with new time: " . $diff . "\n";
+        $comments = [];
+        try {
+            $entrance = Entrance::find($id);
+            $response->setResponse(true);
+            if ($entrance != null) {
+                $response->setEntranceId($entrance->id);
+                if ($entrance->state == "COMPLETED") {
+                    $response->setMessage("the entrance was completed on: " . $entrance->finalized_at);
+                    array_push($comments, "this session token has already been closed");
+                    $response->setComments($comments);
+                } else {
+                    $finalizedAt = Carbon::now();
+                    $entrance->update(['finalized_at' => $finalizedAt, 'state' => "COMPLETED"]);
+                    $response->setMessage("the entrance was completed successfuly.");
+                    array_push($comments, "- this session token was completed and closed at: " . $finalizedAt);
+    
+                    $diff = $this->getEntranceDiffTime($entrance->started_at, $finalizedAt);
+                    $vehicleType = $entrance->vehicleType->id;
+    
+                    if ($vehicleType == $this->residentId) {
+                        $resident = $this->handleResidents($entrance->license_plate, $diff);
+                        if ($resident == ResponseActionCode::CREATED) {
+                            array_push($comments, "- this vehicle was registered as resident on vehicles.");
+                        } else if ($resident == ResponseActionCode::UPDATED) {
+                            array_push($comments, "- this vehicle was updated with new time: " . $diff);
+                        }
+                    } else if ($vehicleType == $this->noResidentId) {
+                        $amount = $entrance->vehicleType->amount;
+                        $difftotime = strtotime($diff);
+                        $total = floatval($amount * (date('i', $difftotime)));
+                        array_push($comments, "- the total amount for [".$diff."] -> $".$total);
+    
+                    } else if ($vehicleType == $this->officialId) {
+                        array_push($comments, "- the total time for official license plate [".$entrance->license_plate."] is [".$diff."]");
+                        array_push($comments, "- from: [".$entrance->started_at."] - to: [".$finalizedAt."]");
                     }
-                } else if ($vehicleType == $this->noResidentId) {
-                    $amount = $entrance->vehicleType->amount;
-                    $total = floatval($amount * (strtotime($diff)/60));
-                    $comments += "- the total amount for [".$diff."] -> $".$total;
-
-                } else if ($vehicleType == $this->officialId) {
-                    $comments += "- the total time for official license plate [".$entrance->license_plate."] is [".$diff."] \n";
-                    $comments += "- from: [".$entrance->started_at."] - to: [".$finalizedAt."] \n";
+                    $response->setComments($comments);
                 }
-
-                $response->setComments($comments);
+            } else {
+                $response->setMessage("entrance was not found.");
             }
-        } else {
+        } catch(\Throwable $th) {
+            dd($th);
             $response->setResponse(false);
             $response->setMessage("an error has ocurred");
         }
-        
         return $response;
     }
 
