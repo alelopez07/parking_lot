@@ -1,49 +1,53 @@
 <?php
 
 namespace App\Repositories;
-use App\Http\Requests\StoreEntranceRequest;
 use App\Interfaces\VehicleInterface;
+use App\Models\BaseResponse;
 use App\Models\Entrance;
 use App\Models\EntrancePaymentDetail;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
+use Carbon\Carbon;
 
 class VehicleRepository implements VehicleInterface
 {
-    protected $vehicleModel;
-    protected $entranceModel;
-    protected $paymentModel;
-
-    public function __construct(
-        Entrance $entrance, 
-        Vehicle $vehicle, 
-        EntrancePaymentDetail $payment
-    ) {
-        $this->entranceModel = $entrance;
-        $this->vehicleModel = $vehicle;
-        $this->paymentModel = $payment;
-    }
-
-    public function newEntrance(StoreEntranceRequest $request) {
-        $this->entranceModel->create($request);
+    public function newEntrance($userId, array $data): BaseResponse {
+        $result = new BaseResponse();
+        try {
+            $startedAt = Carbon::now();
+            Entrance::create([
+                "license_plate" => $data["license_plate"],
+                "started_at" => $startedAt, 
+                "finalized_at" => "0000-00-00 00:00:00", 
+                "state" => "ACTIVE", 
+                "vehicle_type_id" => $data["vehicle_type_id"], 
+                "user_id" => $userId,
+            ]);
+            $result->setResponse(true);
+            $result->setMessage("new entrance registered successfuly.");
+        } catch (\Throwable $th) {
+            $result->setResponse(false);
+            $result->setMessage("an error has ocurred: " . $th->getMessage());
+        }
+        return $result;
     }
 
     public function getEntrancesById($id) {
-        return $this->entranceModel->all();
+        
     }
 
-    public function newVehicleType(array $data): \stdClass {
-        $result = new \stdClass();
+    public function newVehicleType(array $data): BaseResponse {
+        $result = new BaseResponse();
         try {
             $type = VehicleType::create([
                 "name" => $data["name"],
                 "amount" => doubleval($data["amount"]),
             ]);
-            $result->response = true;
-            $result->message = "new vehicle type: " . $type->name . " created successfuly.";
+            $result->setResponse(true);
+            $result->setMessage("new vehicle type: " . $type->name . " created successfuly.");
         } catch (\Throwable $th) {
-            $result->response = false;
-            $result->message = "an error has ocurred";
+            $result->setResponse(false);
+            $result->setMessage("an error has ocurred: " . $th->getMessage());
         }
         return $result;
     }

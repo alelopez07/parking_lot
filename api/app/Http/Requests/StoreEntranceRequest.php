@@ -22,10 +22,8 @@ class StoreEntranceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'total' => 'required|decimal:4,2|min:0',
-            'started_at' => 'required',
+            'license_plate' => 'required',
             'vehicle_type_id' => 'required',
-            'user_id' => 'required'
         ];
     }
 }

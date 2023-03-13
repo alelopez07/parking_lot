@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Requests\StoreEntranceRequest;
 use App\Interfaces\VehicleInterface;
 use App\Traits\ApiResponse;
+use Auth;
 use Illuminate\Routing\Controller as ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -31,7 +32,13 @@ class ParkingLotController extends ApiController {
      * @return $this|JsonResponse
      */
     public function createNewEntrance(StoreEntranceRequest $request): JsonResponse {
-        $entrance = $this->repository->newEntrance($request);
-        return $this->successResponse($entrance);
+        $validated = $request->validated();
+        $authUserId = Auth::user()->id;
+        $newEntrance = $this->repository->newEntrance($authUserId, $validated);
+        if ($newEntrance->response) {
+            return $this->createdResponse($newEntrance);
+        } else {
+            return $this->errorResponse($newEntrance->message);
+        }
     }
 }
