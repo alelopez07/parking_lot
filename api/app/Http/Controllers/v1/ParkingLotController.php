@@ -8,6 +8,7 @@ use App\Traits\ApiResponse;
 use Auth;
 use Illuminate\Routing\Controller as ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ParkingLotController extends ApiController {
 
@@ -39,6 +40,23 @@ class ParkingLotController extends ApiController {
             return $this->createdResponse($newEntrance);
         } else {
             return $this->errorResponse($newEntrance->message);
+        }
+    }
+
+    /**
+     * completeEntrance
+     * 
+     * Admin will finalize the entrance. 
+     * 
+     * @param StoreEntranceRequest $request
+     * @return $this|JsonResponse
+     */
+    public function completeEntrance(Request $request): JsonResponse {
+        $entranceCompleted = $this->repository->completeEntrance($request->entrance_id);
+        if ($entranceCompleted->response) {
+            return $this->okResponse($entranceCompleted);
+        } else {
+            return $this->errorResponse($entranceCompleted);
         }
     }
 }

@@ -9,5 +9,5 @@ interface VehicleInterface
     public function getEntrancesById($id);
     public function newVehicleType(array $data);
     public function newResident(array $data);
-    public function completeEntrance($id);
+    public function completeEntrance($id): BaseResponse;
 }

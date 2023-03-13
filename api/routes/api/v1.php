@@ -14,6 +14,7 @@ Route::prefix('v1')->group(function() {
     Route::group(['middleware' => ["auth:sanctum"]], function() {
         Route::post('/vehicle_type/create', [VehicleController::class, 'createVehicleType']);
         Route::post('/entrance/new', [ParkingLotController::class, 'createNewEntrance']);
+        Route::post('/entrance/complete', [ParkingLotController::class, 'completeEntrance']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
 });
