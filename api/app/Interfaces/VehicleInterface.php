@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Interfaces;
+use App\Models\BaseResponse;
 use App\Models\EntranceResponse;
 
 interface VehicleInterface
@@ -10,4 +11,5 @@ interface VehicleInterface
     public function newVehicleType(array $data);
     public function newResident($licensePlate, $diff);
     public function completeEntrance($id): EntranceResponse;
+    public function addNewVehicle($id, $request): BaseResponse;
 }

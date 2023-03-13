@@ -10,6 +10,7 @@ use App\Models\ResponseActionCode;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Request;
 
 class VehicleRepository implements VehicleInterface
 {
@@ -118,9 +119,8 @@ class VehicleRepository implements VehicleInterface
                 $response->setMessage("entrance was not found.");
             }
         } catch(\Throwable $th) {
-            dd($th);
             $response->setResponse(false);
-            $response->setMessage("an error has ocurred");
+            $response->setMessage("an error has ocurred: " . $th->getMessage());
         }
         return $response;
     }
@@ -151,4 +151,43 @@ class VehicleRepository implements VehicleInterface
         return $diffParse;
     }
 
+    public function addNewVehicle($id, $licensePlate): BaseResponse {
+        $response = new BaseResponse();
+        try {
+            $vehicleExist = Vehicle::where('license_plate',$licensePlate)->first();
+            if ($vehicleExist == null) {
+                $typeId = null;
+                $message = null;
+
+                if (strtoupper($id) == "RESIDENT") {
+                    $typeId = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first()->id;
+                    $message = "A new resident vehicle was registered in database.";
+                } else if(strtoupper($id) == "OFFICIAL") {
+                    $typeId = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first()->id;
+                    $message = "A new official vehicle was registered in database.";
+                } else {
+                    $message = "Operation not completed, vehicle type is not identified.";
+                }
+
+                if ($typeId != null) {
+                    Vehicle::create(
+                        [
+                            'license_plate' => $licensePlate,
+                            'time' => "00:00:00",
+                            'vehicle_type_id' => $typeId
+                        ]
+                    );
+                }
+                
+                $response->setMessage($message);
+            } else {
+                $response->setMessage("This license plate is already registered.");
+            }
+            $response->setResponse(true);
+        } catch (\Throwable $th) {
+            $response->setResponse(false);
+            $response->setMessage("an error occured: " . $th->getMessage());
+        }
+        return $response;
+    }
 }
