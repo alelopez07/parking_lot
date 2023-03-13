@@ -53,10 +53,13 @@ class ParkingLotController extends ApiController {
      */
     public function completeEntrance(Request $request): JsonResponse {
         $entranceCompleted = $this->repository->completeEntrance($request->entrance_id);
+        /*
         if ($entranceCompleted->response) {
             return $this->okResponse($entranceCompleted);
         } else {
             return $this->errorResponse($entranceCompleted);
-        }
+        }*/
+        return $this->errorResponse($entranceCompleted);
+
     }
 }

@@ -8,6 +8,6 @@ interface VehicleInterface
     public function newEntrance($userId, array $data): BaseResponse;
     public function getEntrancesById($id);
     public function newVehicleType(array $data);
-    public function newResident(array $data);
+    public function newResident($licensePlate, $diff);
     public function completeEntrance($id): BaseResponse;
 }

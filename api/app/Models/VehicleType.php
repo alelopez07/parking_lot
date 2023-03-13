@@ -22,6 +22,10 @@ class VehicleType extends Model
     use SoftDeletes;
     use HasUuids;
 
+    const CONST_RESIDENT_KEY = "Vehiculo Residente";
+    const CONST_NO_RESIDENT_KEY = "Vehiculo No Residente";
+    const CONST_OFFICIAL_KEY = "Vehiculo Oficial";
+
     protected $table = 'vehicle_types';
 
     protected $fillable = ['name', 'amount'];

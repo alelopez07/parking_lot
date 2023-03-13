@@ -24,7 +24,7 @@ class Vehicle extends Model
 
     protected $table = 'vehicles';
 
-    protected $fillable = ['license_plate', 'vehicle_type_id'];
+    protected $fillable = ['license_plate', 'time', 'vehicle_type_id'];
 
     /**
      * Generate a new UUID for the model.
