@@ -5,6 +5,7 @@ use App\Interfaces\VehicleInterface;
 use App\Models\BaseResponse;
 use App\Models\Entrance;
 use App\Models\EntrancePaymentDetail;
+use App\Models\EntranceResponse;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
 use Carbon\Carbon;
@@ -12,10 +13,10 @@ use Carbon\Carbon;
 class VehicleRepository implements VehicleInterface
 {
     public function newEntrance($userId, array $data): BaseResponse {
-        $result = new BaseResponse();
+        $result = new EntranceResponse();
         try {
             $startedAt = Carbon::now();
-            Entrance::create([
+            $entrance = Entrance::create([
                 "license_plate" => $data["license_plate"],
                 "started_at" => $startedAt, 
                 "finalized_at" => "0000-00-00 00:00:00", 
@@ -23,6 +24,8 @@ class VehicleRepository implements VehicleInterface
                 "vehicle_type_id" => $data["vehicle_type_id"], 
                 "user_id" => $userId,
             ]);
+            $result->setEntranceId($entrance->id);
+            $result->setComments("this token {entrance_id} will help to finalize this entrance. works as ID");
             $result->setResponse(true);
             $result->setMessage("new entrance registered successfuly.");
         } catch (\Throwable $th) {
@@ -55,4 +58,6 @@ class VehicleRepository implements VehicleInterface
     public function newResident(array $data) {
 
     }
+
+    public function completeEntrance($id) {}
 }
