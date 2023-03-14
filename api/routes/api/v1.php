@@ -21,6 +21,7 @@ Route::prefix('v1')->group(function() {
         Route::post('/vehicle_type/{id}', [VehicleController::class, 'newVehicle']);
         Route::post('/vehicle_type/{id}', [VehicleController::class, 'newVehicle']);
         Route::post('/vehicle_type/createhow t', [VehicleController::class, 'createVehicleType']);
+        Route::get('/initMonth', [VehicleController::class, 'initMonth']);
         Route::get('/vehicle_types', function() {
             return new JsonResponse(VehicleType::all(), Response::HTTP_OK);
         });

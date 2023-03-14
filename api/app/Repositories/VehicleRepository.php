@@ -53,9 +53,7 @@ class VehicleRepository implements VehicleInterface
         return $result;
     }
 
-    public function getEntrancesById($id) {
-        
-    }
+    public function getEntrancesById($id) { }
 
     public function newVehicleType(array $data): BaseResponse {
         $result = new BaseResponse();
@@ -74,6 +72,7 @@ class VehicleRepository implements VehicleInterface
     }
 
     public function newResident($licensePlate, $diff) { }
+
 
     public function completeEntrance($id): EntranceResponse {
         $response = new EntranceResponse();
@@ -160,10 +159,10 @@ class VehicleRepository implements VehicleInterface
                 $message = null;
 
                 if (strtoupper($id) == "RESIDENT") {
-                    $typeId = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first()->id;
+                    $typeId = $this->residentId;
                     $message = "A new resident vehicle was registered in database.";
                 } else if(strtoupper($id) == "OFFICIAL") {
-                    $typeId = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first()->id;
+                    $typeId = $this->officialId;
                     $message = "A new official vehicle was registered in database.";
                 } else {
                     $message = "Operation not completed, vehicle type is not identified.";
