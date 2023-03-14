@@ -1,0 +1,470 @@
+{
+	"info": {
+		"_postman_id": "fe37dd2e-a2e1-4d12-ab0c-905639ca4682",
+		"name": "ParkingLotApi",
+		"description": "Parking lot Api provides control vehicle entries to a parking lot with different rates.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2958634"
+	},
+	"item": [
+		{
+			"name": "protected",
+			"item": [
+				{
+					"name": "newEntrance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|PSTibCnmeMbFgyWejHRPhAvQ2YcWsw96oXMNCOfE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"license_plate\": \"no-residente-ABC123\",\r\n    \"vehicle_type_id\": \"2a384366-a7aa-45e8-963f-fa62806b6da6\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/entrance/new",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entrance",
+								"new"
+							]
+						},
+						"description": "Create a new entry"
+					},
+					"response": []
+				},
+				{
+					"name": "completeEntrance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|U5NQ5nMRTEcRqSZ0lW742n2j9xrxmFbgDm8RyvoX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"entrance_id\": \"520ee5dc-9488-4c6d-ad12-8ae76d32954e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/entrance/complete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"entrance",
+								"complete"
+							]
+						},
+						"description": "Mark an entrance as complete entrance and execute the following conditions:\n\n- Validate if the input has an active status.\n- At the end of the entry if the license plate of the vehicle is registered, this will add the time to the time of the registered vehicle, otherwise a new vehicle will be created in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "createVehicleType",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|PSTibCnmeMbFgyWejHRPhAvQ2YcWsw96oXMNCOfE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Vehiculo No Residente\",\r\n    \"amount\": 0.50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/vehicle_type/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vehicle_type",
+								"create"
+							]
+						},
+						"description": "Create a new type of vehicles for parking."
+					},
+					"response": []
+				},
+				{
+					"name": "newOfficial",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|U5NQ5nMRTEcRqSZ0lW742n2j9xrxmFbgDm8RyvoX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"license_plate\": \"ABC123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/vehicle_type/official",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vehicle_type",
+								"official"
+							]
+						},
+						"description": "Will serve to register a new official with license_plate"
+					},
+					"response": []
+				},
+				{
+					"name": "newResident",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|U5NQ5nMRTEcRqSZ0lW742n2j9xrxmFbgDm8RyvoX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"license_plate\": \"ABC123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/vehicle_type/resident",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vehicle_type",
+								"resident"
+							]
+						},
+						"description": "Will serve to register a new resident with license_plate"
+					},
+					"response": []
+				},
+				{
+					"name": "vehicleTypes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|U5NQ5nMRTEcRqSZ0lW742n2j9xrxmFbgDm8RyvoX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/api/v1/vehicle_types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vehicle_types"
+							]
+						},
+						"description": "Provide a general list for vehicle types."
+					},
+					"response": []
+				},
+				{
+					"name": "newMonth",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|U5NQ5nMRTEcRqSZ0lW742n2j9xrxmFbgDm8RyvoX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/initMonth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"initMonth"
+							]
+						},
+						"description": "Allow admin to reset values and start a new month.\n\nThe following two conditions must be met:\n\n- All vehicles registered as parking entrances that are of official type will be removed.\n- The vehicles registered as residents will return to an initial state in the minute count."
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "4|XpgM3qVJaoW03nYoL99IMm0LRMqaxXIt9Hearlhf",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/api/v1/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logout"
+							]
+						},
+						"description": "In simple words: will get the current access token and then remove it."
+					},
+					"response": []
+				}
+			],
+			"description": "Session-protected source code folder, all these collections will depend on an access token."
+		},
+		{
+			"name": "authentication",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"prueba@prueba.com\",\r\n    \"password\": \"prueba2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				},
+				"description": "Provide us the bearer token."
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jorge Rivas\",\r\n    \"email\": \"prueba@prueba.com\",\r\n    \"password\": \"prueba2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					]
+				},
+				"description": "To create a user, we need to provide a secure strong password and an email address, both variables are of utmost importance for authentication."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{parkingLotApi}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
