@@ -43,7 +43,7 @@ docker exec -it app php artisan migrate --seed
 
 To start the local development server, in your web browser, visit http://localhost/ to verify that the app is running.
 
-You can see a better detail of the API routes described below exposed in the postman document. [click here to get the postman document.]("https://github.com/alelopez07/parking_lot/tree/develop/api/docs/parkingLotApi.postman_collection")
+You can see a better detail of the API routes described below exposed in the postman document. [click here to get the postman document.](https://github.com/alelopez07/parking_lot/tree/develop/api/docs/parkingLotApi.postman_collection)
 
 ### Endpoints
 
