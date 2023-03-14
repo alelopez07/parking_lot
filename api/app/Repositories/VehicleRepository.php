@@ -4,13 +4,11 @@ namespace App\Repositories;
 use App\Interfaces\VehicleInterface;
 use App\Models\BaseResponse;
 use App\Models\Entrance;
-use App\Models\EntrancePaymentDetail;
 use App\Models\EntranceResponse;
 use App\Models\ResponseActionCode;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
 use Carbon\Carbon;
-use Symfony\Component\HttpFoundation\Request;
 
 class VehicleRepository implements VehicleInterface
 {
@@ -53,8 +51,6 @@ class VehicleRepository implements VehicleInterface
         return $result;
     }
 
-    public function getEntrancesById($id) { }
-
     public function newVehicleType(array $data): BaseResponse {
         $result = new BaseResponse();
         try {
@@ -70,8 +66,6 @@ class VehicleRepository implements VehicleInterface
         }
         return $result;
     }
-
-    public function newResident($licensePlate, $diff) { }
 
     public function completeEntrance($id): EntranceResponse {
         $response = new EntranceResponse();

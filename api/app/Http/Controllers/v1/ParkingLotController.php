@@ -60,8 +60,16 @@ class ParkingLotController extends ApiController {
         }
     }
     
+    /**
+     * initMonth
+     * 
+     * 1. will reset the time of resident vehicles to zero.
+     * 2. will remove official vehicles from the entrance register.
+     * 
+     * @return $this|JsonResponse
+     */
 
-    public function initMonth() {
+    public function initMonth(): JsonResponse {
         $initialized = $this->repository->initMonth();
         if ($initialized->response) {
             return $this->okResponse($initialized);
@@ -70,7 +78,13 @@ class ParkingLotController extends ApiController {
         }
     }
 
-    public function generateResidentsPaymentReport(Request $request) {
+    /**
+     * generateResidentsPaymentReport
+     * 
+     * provide a report to show the total amount to be paid for each resident according to the length of stay.
+     * @return $this|JsonResponse
+     */
+    public function generateResidentsPaymentReport(Request $request): JsonResponse {
         $docName = $request->document_name;
         $generated = $this->repository->generateReports();
         if ($generated->response) {
@@ -81,6 +95,5 @@ class ParkingLotController extends ApiController {
         } else {
             return $this->errorResponse($generated->message);
         }
-
     }
 }

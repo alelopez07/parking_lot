@@ -1,9 +1,15 @@
 <?php
 
 namespace App\Interfaces;
-use App\Http\Requests\UserRequest;
 
 interface UserInterface
 {
+    /**
+     * newUser()
+     * Add new user.
+     * 
+     * @param array $request
+     * @return void 
+     */
     public function newUser(array $request);
 }
