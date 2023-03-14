@@ -55,4 +55,26 @@ class VehicleController extends ApiController {
         }
     }
 
+    /**
+     * residents
+     * 
+     * Provide all the residents.
+     * @return JsonResponse
+     */
+    public function residents() {
+        $residents = $this->repository->getResidents();
+        return $this->successResponse($residents);
+    }
+
+    /**
+     * activeEntrances
+     * 
+     * Provide all the active entrances.
+     * @return JsonResponse
+     */
+    public function activeEntrances() {
+        $actives = $this->repository->getActives();
+        return $this->successResponse($actives);
+    }
+
 }

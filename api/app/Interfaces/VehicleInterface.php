@@ -12,4 +12,6 @@ interface VehicleInterface
     public function addNewVehicle($id, $request): BaseResponse;
     public function initMonth(): BaseResponse;
     public function generateReports(): BaseResponse;
+    public function getResidents();
+    public function getActives();
 }

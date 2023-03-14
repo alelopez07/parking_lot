@@ -230,4 +230,12 @@ class VehicleRepository implements VehicleInterface
         }
         return $response;
     }
+
+    public function getResidents() {
+        return Vehicle::where('vehicle_type_id',$this->residentId)->get();
+    }
+
+    public function getActives() {
+        return Entrance::where('state', 'ACTIVE')->get();
+    }
 }
