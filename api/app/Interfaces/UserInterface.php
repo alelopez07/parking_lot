@@ -9,7 +9,7 @@ interface UserInterface
      * Add new user.
      * 
      * @param array $request
-     * @return void 
+     * @return \stdClass
      */
-    public function newUser(array $request);
+    public function newUser(array $request): \stdClass;
 }
