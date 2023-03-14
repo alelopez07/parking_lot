@@ -17,9 +17,13 @@ class VehicleRepository implements VehicleInterface
     private $officialId;
 
     public function __construct() {
-        $this->residentId = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first()->id;
-        $this->noResidentId = VehicleType::where('name',VehicleType::CONST_NO_RESIDENT_KEY)->first()->id;
-        $this->officialId = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first()->id;
+        $resident = VehicleType::where('name',VehicleType::CONST_RESIDENT_KEY)->first();
+        $noResident = VehicleType::where('name',VehicleType::CONST_NO_RESIDENT_KEY)->first();
+        $official = VehicleType::where('name',VehicleType::CONST_OFFICIAL_KEY)->first();
+
+        if ($resident != null) { $this->residentId = $resident->id; } else { $this->residentId = 0; }
+        if ($noResident != null) { $this->residentId = $noResident->id; } else { $this->noResidentId = 0; }
+        if ($official != null) { $this->officialId = $official->id; } else { $this->officialId = 0; }
     }
 
     public function newEntrance($userId, array $data): EntranceResponse {
