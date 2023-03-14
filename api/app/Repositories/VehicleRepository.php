@@ -73,7 +73,6 @@ class VehicleRepository implements VehicleInterface
 
     public function newResident($licensePlate, $diff) { }
 
-
     public function completeEntrance($id): EntranceResponse {
         $response = new EntranceResponse();
         $comments = [];
@@ -186,6 +185,54 @@ class VehicleRepository implements VehicleInterface
         } catch (\Throwable $th) {
             $response->setResponse(false);
             $response->setMessage("an error occured: " . $th->getMessage());
+        }
+        return $response;
+    }
+
+    public function initMonth(): BaseResponse {
+        $response = new BaseResponse();
+        try {
+            $this->resetVehicleTiming();
+            $this->removeOfficialsEntrance();
+            $response->setResponse(true);
+            $response->setMessage("Month was initialized");
+        } catch(\Throwable $th) {
+            $response->setResponse(false);
+            $response->setMessage("An error occured: ".$th->getMessage());
+        }
+        return $response;
+    }
+
+    private function resetVehicleTiming() {
+        $vehicles = Vehicle::where('deleted_at',null)->get();
+        foreach($vehicles as $vehicle) {
+            $vehicle->update(['time' => '00:00:00']);
+        }
+    }
+
+    private function removeOfficialsEntrance() {
+        Entrance::where('vehicle_type_id', $this->officialId)->delete();
+    }
+
+    public function generateReports(): BaseResponse { 
+        $response = new BaseResponse();
+        try {
+            $residents = Vehicle::where('vehicle_type_id',$this->residentId)->get();
+            $results = [];
+            for($i=0; $i<count($residents);++$i) {
+                $result = new \stdClass();
+                $result->licensePlate = $residents[$i]->license_plate;
+                $result->time = $residents[$i]->time;
+                $time = strtotime($result->time);
+                $total = floatval($residents[$i]->vehicleType->amount * (date('i', $time)));
+                $result->total = "$".$total;
+                $results[$i] = $result;
+            }
+            $response->setResponse(true);
+            $response->setMessage($results);
+        } catch(\Throwable $th) {
+            $response->setResponse(false);
+            $response->setMessage('An error occured: ' . $th->getMessage());
         }
         return $response;
     }

@@ -59,4 +59,28 @@ class ParkingLotController extends ApiController {
             return $this->errorResponse($entranceCompleted);
         }
     }
+    
+
+    public function initMonth() {
+        $initialized = $this->repository->initMonth();
+        if ($initialized->response) {
+            return $this->okResponse($initialized);
+        } else {
+            return $this->errorResponse($initialized);
+        }
+    }
+
+    public function generateResidentsPaymentReport(Request $request) {
+        $docName = $request->document_name;
+        $generated = $this->repository->generateReports();
+        if ($generated->response) {
+            $result = new \stdClass();
+            $result->document_name = $docName;
+            $result->residents = $generated->message;
+            return $this->okResponse($result);
+        } else {
+            return $this->errorResponse($generated->message);
+        }
+
+    }
 }

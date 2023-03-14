@@ -12,4 +12,6 @@ interface VehicleInterface
     public function newResident($licensePlate, $diff);
     public function completeEntrance($id): EntranceResponse;
     public function addNewVehicle($id, $request): BaseResponse;
+    public function initMonth(): BaseResponse;
+    public function generateReports(): BaseResponse;
 }

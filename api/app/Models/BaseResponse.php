@@ -4,7 +4,7 @@ namespace App\Models;
 
 class BaseResponse {
     public bool $response;
-    public string $message;
+    public $message;
 
     function setMessage($value) {
         $this->message = $value;
